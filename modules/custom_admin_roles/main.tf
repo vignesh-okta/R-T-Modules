@@ -5,7 +5,7 @@ resource "okta_resource_set" "resource_set" {
   description = each.value.description
 
   resources = try([for resource in each.value.resources
-    : format("%s%s%s", local.okta_org_url,resource.type=="group"||resource.type=="users_in_group"?"/api/v1/groups/":resource.type=="user"?"/api/v1/users/":resource.type=="app"?"/api/v1/apps":"",format("%s%s",try(local.resources_map[format("%s-%s",resource.type=="users_in_group"?"group":resource.type,resource.name)],""),resource.type=="users_in_group"?"/users":""))
+    : format("%s%s%s", local.okta_org_url,resource.type=="all_groups"?"/api/v1/groups":resource.type=="all_users"?"/api/v1/users":resource.type=="group"||resource.type=="users_in_group"?"/api/v1/groups/":resource.type=="user"?"/api/v1/users/":resource.type=="app"?"/api/v1/apps":"",format("%s%s",try(local.resources_map[format("%s-%s",resource.type=="users_in_group"?"group":resource.type,resource.name)],""),resource.type=="users_in_group"?"/users":""))
   ], null)
   }
 
